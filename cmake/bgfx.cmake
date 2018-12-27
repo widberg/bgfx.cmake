@@ -72,6 +72,10 @@ if( APPLE )
 endif()
 
 if( UNIX AND NOT APPLE AND NOT EMSCRIPTEN )
+	if(${CMAKE_VERSION} VERSION_GREATER "3.10.0")
+		# Prefer GLVND-based OpenGL, fallback to legacy OpenGL otherwise.
+		set(OpenGL_GL_PREFERENCE GLVND)
+	endif()
 	find_package(X11 REQUIRED)
 	find_package(OpenGL REQUIRED)
 	#The following commented libraries are linked by bx

@@ -51,16 +51,20 @@ function( add_bgfx_shader FILE FOLDER )
 			list( APPEND OUTPUTS "METAL" )
 			set( OUTPUTS_PRETTY "${OUTPUTS_PRETTY}Metal, " )
 		endif()
-		# gles
-		set( GLES_OUTPUT ${BGFX_DIR}/examples/runtime/shaders/gles/${FILENAME}.bin )
-		shaderc_parse( GLES ${COMMON} ANDROID OUTPUT ${GLES_OUTPUT} )
-		list( APPEND OUTPUTS "GLES" )
-		set( OUTPUTS_PRETTY "${OUTPUTS_PRETTY}GLES, " )
+		# essl
+		set( ESSL_OUTPUT ${BGFX_DIR}/examples/runtime/shaders/essl/${FILENAME}.bin )
+		shaderc_parse( ESSL ${COMMON} ANDROID OUTPUT ${ESSL_OUTPUT} )
+		list( APPEND OUTPUTS "ESSL" )
+		set( OUTPUTS_PRETTY "${OUTPUTS_PRETTY}ESSL, " )
 		# glsl
 		set( GLSL_OUTPUT ${BGFX_DIR}/examples/runtime/shaders/glsl/${FILENAME}.bin )
 		shaderc_parse( GLSL ${COMMON} LINUX PROFILE 120 OUTPUT ${GLSL_OUTPUT} )
 		list( APPEND OUTPUTS "GLSL" )
-		set( OUTPUTS_PRETTY "${OUTPUTS_PRETTY}GLSL" )
+		set( OUTPUTS_PRETTY "${OUTPUTS_PRETTY}GLSL, " )
+		set( SPIRV_OUTPUT ${BGFX_DIR}/examples/runtime/shaders/spirv/${FILENAME}.bin )
+		shaderc_parse( SPIRV ${COMMON} LINUX PROFILE spirv OUTPUT ${SPIRV_OUTPUT} )
+		list( APPEND OUTPUTS "SPIRV" )
+		set( OUTPUTS_PRETTY "${OUTPUTS_PRETTY}SPIR-V" )
 		set( OUTPUT_FILES "" )
 		set( COMMANDS "" )
 		foreach( OUT ${OUTPUTS} )
@@ -166,49 +170,61 @@ add_example(
 
 # Only add examples if set, otherwise we still need exmaples common for tools
 if( BGFX_BUILD_EXAMPLES )
-    # Add examples
-    set(
-        BGFX_EXAMPLES
-        00-helloworld
-        01-cubes
-        02-metaballs
-        03-raymarch
-        04-mesh
-        05-instancing
-        06-bump
-        07-callback
-        08-update
-        09-hdr
-        10-font
-        11-fontsdf
-        12-lod
-        13-stencil
-        14-shadowvolumes
-        15-shadowmaps-simple
-        16-shadowmaps
-        17-drawstress
-        18-ibl
-        19-oit
-        20-nanovg
-        21-deferred
-        22-windows
-        23-vectordisplay
-        24-nbody
-        25-c99
-        26-occlusion
-        27-terrain
-        28-wireframe
-        29-debugdraw
-        30-picking
-        31-rsm
-        32-particles
-        33-pom
-        34-mvs
-        35-dynamic
-        36-sky
-    )
+	# Add examples
+	set(
+	BGFX_EXAMPLES
+	00-helloworld
+	01-cubes
+	02-metaballs
+	03-raymarch
+	04-mesh
+	05-instancing
+	06-bump
+	07-callback
+	08-update
+	09-hdr
+	10-font
+	11-fontsdf
+	12-lod
+	13-stencil
+	14-shadowvolumes
+	15-shadowmaps-simple
+	16-shadowmaps
+	17-drawstress
+	18-ibl
+	19-oit
+	20-nanovg
+	21-deferred
+	22-windows
+	23-vectordisplay
+	24-nbody
+	25-c99
+	26-occlusion
+	27-terrain
+	28-wireframe
+	29-debugdraw
+	30-picking
+	31-rsm
+	32-particles
+	33-pom
+	34-mvs
+	35-dynamic
+	36-sky
+	#37-gpudrivenrendering
+	38-bloom
+	39-assao
+	)
 
-    foreach( EXAMPLE ${BGFX_EXAMPLES} )
-        add_example( ${EXAMPLE} )
-    endforeach()
+	foreach( EXAMPLE ${BGFX_EXAMPLES} )
+		add_example( ${EXAMPLE} )
+	endforeach()
+
+	# Copy runtime assets into the binary location to be able to launch the
+	# examples directly from various IDE without having to specify the working
+	# directly. Assets will become tracked and will update automatically only if
+	# the timestamp of the runtime asset files changes.
+	file(GLOB_RECURSE RUNTIMES RELATIVE ${BGFX_DIR}/examples/runtime ${BGFX_DIR}/examples/runtime/*)
+	foreach(RUNTIME IN LISTS RUNTIMES)
+		configure_file(${BGFX_DIR}/examples/runtime/${RUNTIME} ${PROJECT_BINARY_DIR}/${RUNTIME} COPYONLY)
+	endforeach()
 endif()
