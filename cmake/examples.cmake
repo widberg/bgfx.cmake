@@ -12,7 +12,6 @@ include( CMakeParseArguments )
 
 include( cmake/util/ConfigureDebugging.cmake )
 
-include( cmake/3rdparty/ib-compress.cmake )
 include( cmake/3rdparty/dear-imgui.cmake )
 
 function( add_bgfx_shader FILE FOLDER )
