@@ -75,9 +75,11 @@ elseif( APPLE )
 	mark_as_advanced( METAL_LIBRARY )
 	mark_as_advanced( QUARTZCORE_LIBRARY )
 	target_link_libraries( bgfx PUBLIC ${COCOA_LIBRARY} ${METAL_LIBRARY} ${QUARTZCORE_LIBRARY} )
+elseif( ANDROID )
+	target_link_libraries( bgfx PUBLIC log)
 endif()
 
-if( UNIX AND NOT APPLE AND NOT EMSCRIPTEN )
+if( UNIX AND NOT APPLE AND NOT EMSCRIPTEN AND NOT ANDROID )
 	find_package(X11 REQUIRED)
 	find_package(OpenGL REQUIRED)
 	#The following commented libraries are linked by bx
