@@ -53,8 +53,14 @@ if( MSVC )
 endif()
 
 # Includes
-target_include_directories( bgfx PRIVATE ${BGFX_DIR}/3rdparty ${BGFX_DIR}/3rdparty/dxsdk/include ${BGFX_DIR}/3rdparty/khronos )
-target_include_directories( bgfx PUBLIC ${BGFX_DIR}/include )
+target_include_directories( bgfx
+	PRIVATE
+		${BGFX_DIR}/3rdparty
+		${BGFX_DIR}/3rdparty/dxsdk/include
+		${BGFX_DIR}/3rdparty/khronos
+	PUBLIC
+		$<BUILD_INTERFACE:${BGFX_DIR}/include>
+		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # bgfx depends on bx and bimg
 target_link_libraries( bgfx PUBLIC bx bimg )
@@ -77,7 +83,7 @@ elseif( APPLE )
 	target_link_libraries( bgfx PUBLIC ${COCOA_LIBRARY} ${METAL_LIBRARY} ${QUARTZCORE_LIBRARY} )
 endif()
 
-if( UNIX AND NOT APPLE AND NOT EMSCRIPTEN )
+if( UNIX AND NOT APPLE AND NOT EMSCRIPTEN AND NOT ANDROID )
 	find_package(X11 REQUIRED)
 	find_package(OpenGL REQUIRED)
 	#The following commented libraries are linked by bx
