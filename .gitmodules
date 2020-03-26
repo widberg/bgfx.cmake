@@ -1,9 +1,9 @@
 [submodule "bgfx"]
 	path = bgfx
-	url = https://github.com/bkaradzic/bgfx.git
+	url = https://github.com/VirtualGeo/bgfx.git
 [submodule "bx"]
 	path = bx
-	url = https://github.com/bkaradzic/bx.git
+	url = https://github.com/VirtualGeo/bx.git
 [submodule "bimg"]
 	path = bimg
-	url = https://github.com/bkaradzic/bimg.git
+	url = https://github.com/VirtualGeo/bimg.git
