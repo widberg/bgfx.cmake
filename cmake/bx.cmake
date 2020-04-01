@@ -55,6 +55,7 @@ endif()
 target_compile_definitions( bx PUBLIC "__STDC_LIMIT_MACROS" )
 target_compile_definitions( bx PUBLIC "__STDC_FORMAT_MACROS" )
 target_compile_definitions( bx PUBLIC "__STDC_CONSTANT_MACROS" )
+target_compile_definitions( bx PUBLIC "_CRT_SECURE_NO_WARNINGS")
 
 target_compile_definitions( bx PRIVATE "$<$<CONFIG:Debug>:BX_CONFIG_DEBUG=1>" )
 if(BGFX_CONFIG_DEBUG)
@@ -81,4 +82,11 @@ set_target_properties( bx PROPERTIES FOLDER "bgfx" )
 # Export debug build as "bxd"
 if( BGFX_USE_DEBUG_SUFFIX )
 	set_target_properties( bx PROPERTIES OUTPUT_NAME_DEBUG "bxd" )
+endif()
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "WindowsStore")
+	# Compiles source code to support Visual C++ component extensions C++/CX
+	# for the creation of Universal Windows Platform (UWP) apps.
+	target_compile_options(bx PRIVATE /ZW )
+	target_link_options(bx PRIVATE /ignore:4264)
 endif()
