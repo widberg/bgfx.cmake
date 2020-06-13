@@ -8,12 +8,24 @@
 # You should have received a copy of the CC0 Public Domain Dedication along with
 # this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-if( TARGET squish )
+if( TARGET webgpu )
 	return()
 endif()
 
-file( GLOB SQUISH_SOURCES ${BIMG_DIR}/3rdparty/libsquish/*.cpp ${BIMG_DIR}/3rdparty/libsquish/*.h ${BIMG_DIR}/3rdparty/libsquish/*.inl )
+file(
+	GLOB
+    WEBGPU_SOURCES
+	${BGFX_DIR}/3rdparty/webgpu/include/webgpu/*.h
+    # ${BGFX_DIR}/3rdparty/webgpu/webgpu_cpp.cpp  # requires dawn to be installed
+)
 
-add_library( squish STATIC ${SQUISH_SOURCES} )
-target_include_directories( squish PUBLIC $<BUILD_INTERFACE:${BIMG_DIR}/3rdparty> )
-set_target_properties( squish PROPERTIES FOLDER "bgfx/3rdparty" )
+# Library without sources is interface
+#add_library( webgpu STATIC ${WEBGPU_SOURCES} )
+add_library(webgpu INTERFACE)
+target_include_directories( webgpu 
+    # PUBLIC
+    INTERFACE
+	    $<BUILD_INTERFACE:${BGFX_DIR}/3rdparty/webgpu/include>
+)
+
+# set_target_properties( webgpu PROPERTIES FOLDER "bgfx/3rdparty" )
