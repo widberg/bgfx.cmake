@@ -18,7 +18,10 @@ set_property( GLOBAL PROPERTY USE_FOLDERS ON )
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_DEBUG_POSTFIX "d")
+
+if(NOT DEFINED CMAKE_DEBUG_POSTFIX)
+	set(CMAKE_DEBUG_POSTFIX "d")
+endif()
 
 # Makefile generators on apple need this flag to compile mixed objective/c++
 if( APPLE AND NOT XCODE )
