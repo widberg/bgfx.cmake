@@ -44,8 +44,15 @@ target_include_directories( bx
 		$<BUILD_INTERFACE:${BX_DIR}/3rdparty>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
 
+# Detect Clang
+if( CMAKE_C_COMPILER_ID MATCHES "Clang" )
+	set(CLANG TRUE)
+else()
+	set(CLANG FALSE)
+endif()
+
 # Build system specific configurations
-if( MSVC )
+if( MSVC OR (WIN32 AND CLANG) )
 	target_include_directories( bx
 		PUBLIC
 			$<BUILD_INTERFACE:${BX_DIR}/include/compat/msvc>
