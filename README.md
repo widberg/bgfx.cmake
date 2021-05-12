@@ -1,3 +1,5 @@
+# New Fork: https://github.com/bkaradzic/bgfx.cmake
+
 bgfx.cmake
 ===================
 [![Build Status](https://travis-ci.org/widberg/bgfx.cmake.svg?branch=master)](https://travis-ci.org/widberg/bgfx.cmake)
